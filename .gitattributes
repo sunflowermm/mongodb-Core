@@ -1,1 +1,2 @@
-*.svg text eol=lf working-tree-encoding=UTF-8
+*.png binary
+*.svg export-ignore

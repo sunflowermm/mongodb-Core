@@ -1,7 +1,25 @@
 # mongodb-Core API 参考
 
-> 业务 Core **唯一**应 `import` 的入口：`lib/index.js`  
-> 禁止：`MongoClient`、`db.collection('裸名')`、在 `src/infrastructure` 加 Mongo 建连
+本文档描述 mongodb-Core 对外公开的 JavaScript API。业务 Core 应通过 `lib/index.js` 接入数据层。
+
+---
+
+## 模块结构
+
+```text
+lib/
+├── index.js              # 公开入口
+├── client.js             # connect / getDb / getCollection
+├── collection-registry.js
+├── repository-base.js
+├── migration-runner.js
+├── index-manager.js
+├── transaction.js
+├── tenant.js
+├── config.js
+├── naming.js
+└── store/
+```
 
 ---
 
@@ -186,11 +204,12 @@ await repo.get('ws-1', 'key');
 
 ---
 
-## 反模式
+## 注意事项
 
-| 不要 | 应该 |
-|------|------|
-| `new MongoClient(...)` 在业务 Core | `import` mongodb-Core/lib |
-| 集合名手写 `'users'` | `registerCollection('lsy','users')` |
-| 订单状态只放 Redis | 持久化 Mongo / Postgres |
-| 改 `src/infrastructure/database` | 改本 Core 或业务 Repo |
+| 场景 | 推荐做法 |
+|------|----------|
+| 业务 Core 访问 MongoDB | `import` 本 Core 的 `lib/index.js` |
+| 集合命名 | `registerCollection(owner, entity)` |
+| 需持久化的业务状态 | MongoDB 或 postgres-Core |
+| 缓存、锁、短期计数 | Runtime Redis |
+| 连接与迁移逻辑变更 | 在本 Core 或业务 Repository 中扩展 |

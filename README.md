@@ -16,7 +16,7 @@
 
 <br>
 
-[安装](#安装) · [架构](#架构) · [快速接入](#快速接入) · [配置](#配置) · [API](#http-api) · [迁移](#迁移) · [铁律](#铁律) · [DB 家族](#数据库-core-家族)
+[安装](#安装) · [架构](#架构) · [API 文档](#api-文档) · [快速接入](#快速接入) · [配置](#配置) · [HTTP](#http-api) · [迁移](#迁移) · [铁律](#铁律)
 
 <br>
 
@@ -55,11 +55,45 @@ cd .. && pnpm add mongodb && node app
 
 ![mongodb-Core 分层架构](./img/architecture.svg)
 
+> GitHub 若无法预览 SVG，请看下方 Mermaid 或打开 `img/architecture.svg` 本地查看。SVG 须为 UTF-8、无控制字符（已附 `.gitattributes`）。
+
+```mermaid
+flowchart TB
+  subgraph L0["L0 Runtime"]
+    R[Redis built-in]
+  end
+  subgraph L1["L1 mongodb-Core"]
+    C[connect]
+    REG[registerCollection]
+    REP[Repository]
+    MIG[migrations]
+  end
+  subgraph L2["L2 Business Core"]
+    LSY[lsy-Core lib/store]
+  end
+  R --> LSY
+  C --> REG --> REP
+  MIG --> REP
+  REP --> LSY
+```
+
 ```text
 XRK-AGT Runtime          →  Redis（内置，必需）
 mongodb-Core（本仓库）    →  connect · registerCollection · Repository · migrations
 业务 Core（lsy / jm …）   →  lib/store/*Repo.js，只 import mongodb-Core/lib
 ```
+
+## API 文档
+
+完整函数说明、参数、反模式：**[`docs/API.md`](./docs/API.md)**
+
+| 常用入口 | 用途 |
+|----------|------|
+| `registerCollection(owner, entity, { indexes })` | 注册集合命名空间 |
+| `Repository` | CRUD 基类 |
+| `bootstrap()` / `MongoService` | 启动与全局访问 |
+| `runMigrations()` | 版本化 schema |
+| `withTransaction(fn)` | 多文档事务（副本集） |
 
 ### 目录结构
 
@@ -217,8 +251,10 @@ export default {
 
 ## 相关文档
 
-- AGT 侧 Redis 说明：[XRK-AGT `docs/database.md`](https://github.com/sunflowermm/XRK-AGT/blob/main/docs/database.md)
-- 产品 Agent 规则：[`AGENTS.md`](./AGENTS.md)
+- **API 参考**：[`docs/API.md`](./docs/API.md)
+- DB Core 选型图：[`img/db-cores-family.svg`](./img/db-cores-family.svg)
+- AGT Redis：[`docs/database.md`](https://github.com/sunflowermm/XRK-AGT/blob/main/docs/database.md)
+- 产品 Agent：[`AGENTS.md`](./AGENTS.md)
 
 ---
 

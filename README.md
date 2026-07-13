@@ -193,6 +193,7 @@ export default {
 |---|---|
 | **mongodb-Core** | 文档型、Schema 灵活的业务数据 |
 | [postgres-Core](https://github.com/sunflowermm/postgres-Core) | 事务、关系查询、报表 |
+| [vector-Core](https://github.com/sunflowermm/vector-Core) | 向量检索、RAG 召回 |
 | Runtime Redis | 缓存、分布式锁、短期状态 |
 
 选型示意见 [`img/db-cores-family.png`](./img/db-cores-family.png)。

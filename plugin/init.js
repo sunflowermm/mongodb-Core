@@ -1,5 +1,6 @@
 import plugin from '#infrastructure/plugins/plugin.js';
 import { setRuntimeGlobal } from '#utils/runtime-globals.js';
+import { normalizeError } from '#utils/normalize-error.js';
 import * as MongoService from '../lib/index.js';
 
 export default class MongoDbCoreInit extends plugin {
@@ -21,8 +22,9 @@ export default class MongoDbCoreInit extends plugin {
       const mig = result.migrations?.length ? result.migrations.join(',') : 'none';
       logger.mark(`[mongodb-Core] bootstrap OK migrations=[${mig}]`);
     } catch (err) {
-      logger.error(`[mongodb-Core] bootstrap 失败: ${err.message}`);
-      throw err;
+      const error = normalizeError(err);
+      // 可选存储：Mongo 未装/未起时不阻断其它插件
+      logger.warn(`[mongodb-Core] bootstrap 跳过: ${error.message}`);
     }
   }
 }

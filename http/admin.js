@@ -1,4 +1,4 @@
-import { HttpResponse } from '#utils/http-utils.js';
+import { HttpResponse } from '../../../src/utils/http-utils.js';
 
 export default {
   name: 'mongodb-core-admin',

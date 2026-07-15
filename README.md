@@ -31,7 +31,7 @@ mongodb-Core 为 XRK-AGT 提供 MongoDB 连接、集合命名空间、Repository
 |---|---|
 | 运行环境 | [XRK-AGT](https://github.com/sunflowermm/XRK-AGT)（Node ≥ 26） |
 | 安装路径 | `core/mongodb-Core/` |
-| 依赖 | 宿主安装 `mongodb` 驱动；MongoDB 服务需自行部署 |
+| 依赖 | 本 Core `package.json` 声明 `mongodb`；MongoDB 服务需自行部署 |
 | 与 Runtime | XRK-AGT 内置 Redis；MongoDB 由本 Core 独立初始化 |
 
 ---
@@ -42,13 +42,13 @@ mongodb-Core 为 XRK-AGT 提供 MongoDB 连接、集合命名空间、Repository
 cd XRK-AGT/core
 git clone https://github.com/sunflowermm/mongodb-Core.git mongodb-Core
 cd ..
-pnpm add mongodb
+pnpm install
 node app
 ```
 
 首次启动时，配置从 `core/mongodb-Core/default/mongodb-core.yaml` 复制到 `data/mongodb-core/config.yaml`。
 
-本 Core 无独立 `package.json`，通过宿主 `#infrastructure/*`、`#utils/*` 别名加载。
+本 Core 自带 `package.json`（workspace 依赖 `mongodb`）；引用 Runtime 须用相对路径（如 `../../../src/utils/...`），勿用宿主 `#` 别名。
 
 ---
 

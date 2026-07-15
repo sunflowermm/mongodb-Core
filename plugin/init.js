@@ -1,9 +1,9 @@
-import plugin from '#infrastructure/plugins/plugin.js';
-import { setRuntimeGlobal } from '#utils/runtime-globals.js';
-import { normalizeError } from '#utils/normalize-error.js';
+import PluginBase from '../../../src/infrastructure/plugins/plugin-base.js';
+import { setRuntimeGlobal } from '../../../src/utils/runtime-globals.js';
+import { normalizeError } from '../../../src/utils/normalize-error.js';
 import * as MongoService from '../lib/index.js';
 
-export default class MongoDbCoreInit extends plugin {
+export default class MongoDbCoreInit extends PluginBase {
   constructor() {
     super({
       name: 'mongodb-core-init',

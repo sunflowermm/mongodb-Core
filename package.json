@@ -1,0 +1,13 @@
+{
+  "name": "mongodb-core",
+  "version": "1.0.0",
+  "private": true,
+  "description": "XRK-AGT MongoDB 持久化 Core",
+  "type": "module",
+  "engines": {
+    "node": ">=26.0.0"
+  },
+  "dependencies": {
+    "mongodb": "^6.20.0"
+  }
+}
